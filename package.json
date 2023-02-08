@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && cd dist && git push -f git@github.com:crono628/trivia-app.git"
   },
   "dependencies": {
     "react": "^18.2.0",
