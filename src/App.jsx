@@ -5,12 +5,11 @@ const App = () => {
   const [questions, setQuestions] = useState([])
 
   useEffect(() => {
-    console.log('render')
-
     let isSubscribed = true
 
     let apiCall = async () => {
       let called = await getQuestions()
+
       if (isSubscribed) {
         setQuestions(called)
       }
@@ -21,21 +20,13 @@ const App = () => {
     return () => (isSubscribed = false)
   }, [])
 
-  let newThing = questions?.map((item) => {
-    console.log('item', item)
-  })
+  console.log(questions)
 
-  console.log(newThing)
+  const listItems = questions?.map((item) => (
+    <li key={item.id}>{item.question}</li>
+  ))
 
-  return (
-    <ul>
-      {questions?.map((item) => {
-        for (const key in item) {
-          return decodeURI(item[key])
-        }
-      })}
-    </ul>
-  )
+  return <ul>{listItems}</ul>
 }
 
 export default App
