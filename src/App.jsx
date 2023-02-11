@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
+import Question from './components/Question'
 import getQuestions from './functions/getQuestions'
 
 const App = () => {
-  const [questions, setQuestions] = useState([])
+  const [questions, setQuestions] = useState()
 
   useEffect(() => {
     let isSubscribed = true
@@ -20,13 +21,7 @@ const App = () => {
     return () => (isSubscribed = false)
   }, [])
 
-  console.log(questions)
-
-  const listItems = questions?.map((item) => (
-    <li key={item.id}>{item.question}</li>
-  ))
-
-  return <ul>{listItems}</ul>
+  return <div>{questions && <Question q={questions[0]} />}</div>
 }
 
 export default App
