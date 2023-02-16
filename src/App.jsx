@@ -21,7 +21,21 @@ const App = () => {
     return () => (isSubscribed = false)
   }, [])
 
-  return <div>{questions && <Question q={questions[0]} />}</div>
+  // const randoNum = Math.floor(Math.random() * 10)
+  // console.log(randoNum)
+
+  return (
+    <div>
+      {questions?.map((q) => {
+        console.log(q)
+        return (
+          <div key={q.id}>
+            <Question obj={q} />
+          </div>
+        )
+      })}
+    </div>
+  )
 }
 
 export default App

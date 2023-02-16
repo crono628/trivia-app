@@ -1,14 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-const Question = ({ q }) => {
-  const { question, correctAnswer, incorrectAnswers } = q
-  console.log(incorrectAnswers)
-  return q ? (
+const Question = ({ obj }) => {
+  console.log(obj)
+  const [choices, setChoices] = useState()
+
+  useEffect(() => {
+    if (obj) {
+      let answers = obj.incorrectAnswers.map((item) => {
+        return { answer: item, correct: false }
+      })
+      answers.push({ answer: obj.correctAnswer, correct: true })
+      // console.log(answers)
+      setChoices(answers)
+    }
+  }, [])
+
+  return (
     <div>
-      <div>{question}</div>
+      <div className="question">{obj.question}</div>
+      {choices?.map((item, index) => {
+        return <span key={index}> {item.answer} </span>
+      })}
     </div>
-  ) : (
-    <div></div>
   )
 }
 
