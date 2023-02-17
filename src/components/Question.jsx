@@ -15,13 +15,31 @@ const Question = ({ obj }) => {
     }
   }, [])
 
+  const choiceStyle = {
+    fontSize: '0.9rem',
+    cursor: 'pointer',
+    '&:hover': {
+      background: 'red'
+    }
+  }
+
+  const handleClick = (e) => {
+    console.log('click')
+  }
+
   return (
-    <div>
+    <>
       <div className="question">{obj.question}</div>
-      {choices?.map((item, index) => {
-        return <span key={index}> {item.answer} </span>
-      })}
-    </div>
+      <span className="choice-wrapper">
+        {choices?.map((item, index) => {
+          return (
+            <div onClick={handleClick} style={choiceStyle} key={index}>
+              {item.answer}
+            </div>
+          )
+        })}
+      </span>
+    </>
   )
 }
 

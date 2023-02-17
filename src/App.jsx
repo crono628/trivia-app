@@ -25,15 +25,16 @@ const App = () => {
   // console.log(randoNum)
 
   return (
-    <div>
-      {questions?.map((q) => {
-        console.log(q)
-        return (
-          <div key={q.id}>
-            <Question obj={q} />
-          </div>
-        )
-      })}
+    <div className="app-wrapper">
+      <div className="question-wrapper">
+        {questions?.map((q) => {
+          return (
+            <div key={q.id}>
+              <Question obj={q} />
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
