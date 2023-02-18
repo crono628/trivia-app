@@ -4,25 +4,33 @@ import getQuestions from './functions/getQuestions'
 
 const App = () => {
   const [questions, setQuestions] = useState()
+  const [selections, setSelections] = useState(Array(10).fill(null))
 
   useEffect(() => {
     let isSubscribed = true
+    if (isSubscribed) {
+      const promise = getQuestions()
+      promise.then((data) => {
+        let questionArr = data.map((item) => {
+          let answers = item.incorrectAnswers.map((item) => {
+            return { answer: item, correct: false }
+          })
+          answers.push({ answer: item.correctAnswer, correct: true })
+          shuffleArray(answers)
 
-    let apiCall = async () => {
-      let called = await getQuestions()
-
-      if (isSubscribed) {
-        setQuestions(called)
-      }
+          return {
+            id: item.id,
+            question: item.question,
+            answers: answers
+          }
+        })
+        setQuestions(questionArr)
+        console.log('questions', questionArr)
+      })
     }
-
-    apiCall().catch(console.error)
 
     return () => (isSubscribed = false)
   }, [])
-
-  // const randoNum = Math.floor(Math.random() * 10)
-  // console.log(randoNum)
 
   return (
     <div className="app-wrapper">
@@ -37,6 +45,26 @@ const App = () => {
       </div>
     </div>
   )
+}
+
+function shuffleArray(array) {
+  let currentIndex = array.length,
+    temporaryValue,
+    randomIndex
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex)
+    currentIndex -= 1
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex]
+    array[currentIndex] = array[randomIndex]
+    array[randomIndex] = temporaryValue
+  }
+
+  return array
 }
 
 export default App

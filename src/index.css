@@ -32,6 +32,19 @@
 .choice-wrapper {
   display: flex;
   justify-content: center;
-  padding: 10px;
   gap: 1rem;
+}
+
+.choice-style {
+  padding: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: linear 100ms;
+  border-radius: 1rem;
+}
+
+.choice-style:hover {
+  background-color: red;
+  transition: linear 200ms;
+  border-radius: 1rem;
 }
