@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-const Question = ({ obj }) => {
-  const handleClick = (e) => {
-    console.log('click')
-  }
-
+const Question = ({ obj, handleClick }) => {
   return (
     <>
       <div className="question">{obj.question}</div>

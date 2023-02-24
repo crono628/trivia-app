@@ -3,12 +3,12 @@ import Question from './components/Question'
 import getQuestions from './functions/getQuestions'
 
 const App = () => {
-  const [questions, setQuestions] = useState()
-  const [selections, setSelections] = useState(Array(10).fill(null))
+  const [questions, setQuestions] = useState([])
+  const [selections, setSelections] = useState([null])
 
   useEffect(() => {
     let isSubscribed = true
-    if (isSubscribed) {
+    if (isSubscribed && questions.length < 1) {
       const promise = getQuestions()
       promise.then((data) => {
         let questionArr = data.map((item) => {
@@ -25,39 +25,37 @@ const App = () => {
           }
         })
         setQuestions(questionArr)
+        let num = questionArr.length
+        setSelections(Array(num).fill(null))
       })
     }
 
-    // let newArr = [...selections]
-    // newArr[0] = 1
-    // newArr[1] = 2
-
-    // setSelections(newArr)
     return () => (isSubscribed = false)
-  }, [])
+  }, [selections])
+
+  const handleClick = (e) => {
+    let choice = e.target.innerText
+    let next = locateNext(selections)
+    questions[next].answers.forEach((item) => {
+      setSelections((prev) => {
+        const newArr = [...prev]
+        newArr[next] = item.answer === choice && item.correct ? 1 : 0
+        return newArr
+      })
+    })
+  }
+
   return (
     <div className="app-wrapper">
+      <div>SCORE: {selections?.reduce((a, b) => a + b, 0)}</div>
       <div className="question-wrapper">
         {questions?.map((q, i) => {
-          let next
-          if (!selections.find(Number)) {
-            next = 0
-          } else {
-            let index = -1
-            for (let i = 0; i < selections.length; i++) {
-              const element = selections[i]
-              if (element === null) {
-                index = i
-                break
-              }
-            }
-            next = index
-          }
+          let next = locateNext(selections)
           console.log(next)
           if (i === next) {
             return (
               <div key={q.id}>
-                <Question obj={q} />
+                <Question handleClick={handleClick} obj={q} />
               </div>
             )
           }
@@ -85,6 +83,11 @@ function shuffleArray(array) {
   }
 
   return array
+}
+
+function locateNext(array) {
+  const nullIndex = array.findIndex((element) => element === null)
+  return nullIndex !== -1 ? nullIndex : array.length
 }
 
 export default App
