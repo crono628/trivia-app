@@ -25,22 +25,42 @@ const App = () => {
           }
         })
         setQuestions(questionArr)
-        console.log('questions', questionArr)
       })
     }
 
+    // let newArr = [...selections]
+    // newArr[0] = 1
+    // newArr[1] = 2
+
+    // setSelections(newArr)
     return () => (isSubscribed = false)
   }, [])
-
   return (
     <div className="app-wrapper">
       <div className="question-wrapper">
-        {questions?.map((q) => {
-          return (
-            <div key={q.id}>
-              <Question obj={q} />
-            </div>
-          )
+        {questions?.map((q, i) => {
+          let next
+          if (!selections.find(Number)) {
+            next = 0
+          } else {
+            let index = -1
+            for (let i = 0; i < selections.length; i++) {
+              const element = selections[i]
+              if (element === null) {
+                index = i
+                break
+              }
+            }
+            next = index
+          }
+          console.log(next)
+          if (i === next) {
+            return (
+              <div key={q.id}>
+                <Question obj={q} />
+              </div>
+            )
+          }
         })}
       </div>
     </div>
