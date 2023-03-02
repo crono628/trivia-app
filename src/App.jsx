@@ -34,24 +34,33 @@ const App = () => {
   }, [selections])
 
   const handleClick = (e) => {
-    let choice = e.target.innerText
+    let choice = e.target.id
     let next = locateNext(selections)
-    questions[next].answers.forEach((item) => {
-      setSelections((prev) => {
-        const newArr = [...prev]
-        newArr[next] = item.answer === choice && item.correct ? 1 : 0
-        return newArr
-      })
+    console.log(questions[next].answers[Number(choice)].correct)
+    setSelections((prev) => {
+      const newArr = [...prev]
+      newArr[next] = questions[next].answers[Number(choice)].correct ? 1 : 0
+      return newArr
     })
+
+    // questions[next].answers.forEach((item, index) => {
+    //   setSelections((prev) => {
+    //     const newArr = [...prev]
+    //     newArr[next] = item.answer === choice && item.correct ? 1 : 0
+    //     return newArr
+    //   })
+    // })
   }
 
   return (
     <div className="app-wrapper">
-      <div>SCORE: {selections?.reduce((a, b) => a + b, 0)}</div>
+      <div>
+        SCORE:{' '}
+        {selections?.reduce((a, b) => (typeof b === 'number' ? a + b : a), 0)}
+      </div>
       <div className="question-wrapper">
         {questions?.map((q, i) => {
           let next = locateNext(selections)
-          console.log(next)
           if (i === next) {
             return (
               <div key={q.id}>
