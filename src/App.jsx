@@ -21,7 +21,9 @@ const App = () => {
           return {
             id: item.id,
             question: item.question,
-            answers: answers
+            answers: answers,
+            category: item.category,
+            difficulty: item.difficulty
           }
         })
         setQuestions(questionArr)
@@ -31,36 +33,31 @@ const App = () => {
     }
 
     return () => (isSubscribed = false)
-  }, [selections])
+  }, [])
 
   const handleClick = (e) => {
+    // reflects the index of the questions answers stored in the targets id
     let choice = e.target.id
-    let next = locateNext(selections)
-    console.log(questions[next].answers[Number(choice)].correct)
+    // finds the currently displayed question
+    let current = locateCurrentQ(selections)
     setSelections((prev) => {
       const newArr = [...prev]
-      newArr[next] = questions[next].answers[Number(choice)].correct ? 1 : 0
+      newArr[current] = questions[current].answers[Number(choice)].correct
+        ? 1
+        : 0
       return newArr
     })
-
-    // questions[next].answers.forEach((item, index) => {
-    //   setSelections((prev) => {
-    //     const newArr = [...prev]
-    //     newArr[next] = item.answer === choice && item.correct ? 1 : 0
-    //     return newArr
-    //   })
-    // })
   }
 
   return (
     <div className="app-wrapper">
-      <div>
+      <div className="score-div">
         SCORE:{' '}
         {selections?.reduce((a, b) => (typeof b === 'number' ? a + b : a), 0)}
       </div>
       <div className="question-wrapper">
         {questions?.map((q, i) => {
-          let next = locateNext(selections)
+          let next = locateCurrentQ(selections)
           if (i === next) {
             return (
               <div key={q.id}>
@@ -78,14 +75,13 @@ function shuffleArray(array) {
   let currentIndex = array.length,
     temporaryValue,
     randomIndex
-
-  // While there remain elements to shuffle...
+  // while there remain elements to shuffle
   while (0 !== currentIndex) {
-    // Pick a remaining element...
+    // pick a remaining element
     randomIndex = Math.floor(Math.random() * currentIndex)
     currentIndex -= 1
 
-    // And swap it with the current element.
+    // and swap it with the current element
     temporaryValue = array[currentIndex]
     array[currentIndex] = array[randomIndex]
     array[randomIndex] = temporaryValue
@@ -94,7 +90,7 @@ function shuffleArray(array) {
   return array
 }
 
-function locateNext(array) {
+function locateCurrentQ(array) {
   const nullIndex = array.findIndex((element) => element === null)
   return nullIndex !== -1 ? nullIndex : array.length
 }
