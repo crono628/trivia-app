@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from 'react'
-
 const Question = ({ obj, handleClick }) => {
   console.table(obj.answers)
   return (

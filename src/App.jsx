@@ -1,6 +1,7 @@
-import { useGameContext } from './components/Context/GameContext'
+import { useGameContext } from './Context/GameContext'
 import Question from './components/Question'
 import { locateCurrentQ } from './functions/helperFunctions'
+import { Welcome } from './components/Welcome/Welcome'
 
 const App = () => {
   const { state, dispatch } = useGameContext()
@@ -26,6 +27,14 @@ const App = () => {
       }
     })
   }
+
+  // if (state.gameOver) return <div>GAME OVER</div>
+  if (!state.gameStart)
+    return (
+      <div>
+        <Welcome />
+      </div>
+    )
 
   return (
     <div className="app-wrapper">

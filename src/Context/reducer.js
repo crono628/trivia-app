@@ -17,7 +17,9 @@ function reducer(state, { type, payload }) {
 const initialState = {
   questions: [],
   selections: [null],
-  loading: true
+  loading: true,
+  gameStart: false,
+  gameOver: false
 }
 
 export { reducer, initialState }

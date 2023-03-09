@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useReducer } from 'react'
-import { getQuestions, shuffleArray } from '../../functions/helperFunctions'
+import { getQuestions, shuffleArray } from '../functions/helperFunctions'
 import { initialState, reducer } from './reducer'
 
 const GameContext = createContext()
