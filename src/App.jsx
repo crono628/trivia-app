@@ -1,55 +1,29 @@
-import { useEffect, useState } from 'react'
+import { useGameContext } from './components/Context/GameContext'
 import Question from './components/Question'
-import {
-  getQuestions,
-  shuffleArray,
-  locateCurrentQ
-} from './functions/helperFunctions'
+import { locateCurrentQ } from './functions/helperFunctions'
 
 const App = () => {
-  const [questions, setQuestions] = useState([])
-  const [selections, setSelections] = useState([null])
-
-  useEffect(() => {
-    let isSubscribed = true
-    if (isSubscribed && questions.length < 1) {
-      const promise = getQuestions()
-      promise.then((data) => {
-        let questionArr = data.map((item) => {
-          let answers = item.incorrectAnswers.map((item) => {
-            return { answer: item, correct: false }
-          })
-          answers.push({ answer: item.correctAnswer, correct: true })
-          shuffleArray(answers)
-
-          return {
-            id: item.id,
-            question: item.question,
-            answers: answers,
-            category: item.category,
-            difficulty: item.difficulty
-          }
-        })
-        setQuestions(questionArr)
-        let num = questionArr.length
-        setSelections(Array(num).fill(null))
-      })
-    }
-
-    return () => (isSubscribed = false)
-  }, [])
+  const { state, dispatch } = useGameContext()
 
   const handleClick = (e) => {
     // reflects the index of the questions answers stored in the targets id
     let choice = e.target.id
     // finds the currently displayed question
-    let current = locateCurrentQ(selections)
-    setSelections((prev) => {
-      const newArr = [...prev]
-      newArr[current] = questions[current].answers[Number(choice)].correct
+    let current = locateCurrentQ(state.selections)
+    // updates the selections array with the users answer
+    function updatedArr() {
+      const newArr = [...state.selections]
+      newArr[current] = state.questions[current].answers[Number(choice)].correct
         ? 1
         : 0
       return newArr
+    }
+    dispatch({
+      type: 'update',
+      payload: {
+        key: 'selections',
+        value: updatedArr()
+      }
     })
   }
 
@@ -57,11 +31,14 @@ const App = () => {
     <div className="app-wrapper">
       <div className="score-div">
         SCORE:{' '}
-        {selections?.reduce((a, b) => (typeof b === 'number' ? a + b : a), 0)}
+        {state.selections?.reduce(
+          (a, b) => (typeof b === 'number' ? a + b : a),
+          0
+        )}
       </div>
       <div className="question-wrapper">
-        {questions?.map((q, i) => {
-          let next = locateCurrentQ(selections)
+        {state.questions?.map((q, i) => {
+          let next = locateCurrentQ(state.selections)
           if (i === next) {
             return (
               <div key={q.id}>
