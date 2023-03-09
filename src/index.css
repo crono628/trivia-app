@@ -20,7 +20,7 @@
 
 .question {
   font-weight: bolder;
-  margin-top: 1rem;
+  margin: 1rem 0 2rem 0;
   display: flex;
   justify-content: center;
   font-size: 1.7rem;
@@ -45,6 +45,7 @@
   cursor: pointer;
   transition: linear 100ms;
   border-radius: 1rem;
+  width: 50%;
 }
 
 .choice-style:hover {

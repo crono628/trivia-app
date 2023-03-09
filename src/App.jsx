@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 import Question from './components/Question'
-import getQuestions from './functions/getQuestions'
+import {
+  getQuestions,
+  shuffleArray,
+  locateCurrentQ
+} from './functions/helperFunctions'
 
 const App = () => {
   const [questions, setQuestions] = useState([])
@@ -69,30 +73,6 @@ const App = () => {
       </div>
     </div>
   )
-}
-
-function shuffleArray(array) {
-  let currentIndex = array.length,
-    temporaryValue,
-    randomIndex
-  // while there remain elements to shuffle
-  while (0 !== currentIndex) {
-    // pick a remaining element
-    randomIndex = Math.floor(Math.random() * currentIndex)
-    currentIndex -= 1
-
-    // and swap it with the current element
-    temporaryValue = array[currentIndex]
-    array[currentIndex] = array[randomIndex]
-    array[randomIndex] = temporaryValue
-  }
-
-  return array
-}
-
-function locateCurrentQ(array) {
-  const nullIndex = array.findIndex((element) => element === null)
-  return nullIndex !== -1 ? nullIndex : array.length
 }
 
 export default App
